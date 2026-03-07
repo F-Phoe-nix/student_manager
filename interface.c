@@ -20,6 +20,7 @@ void interface(){
         printf("0. Exit\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
+        getchar();
 
         switch(choice){
             case 1:
@@ -38,6 +39,7 @@ void interface(){
                 int search_id;
                 printf("\nEnter student id to search: ");
                 scanf("%d", &search_id);
+                getchar();
 
                 int index = search_student(student, count, search_id);
 
@@ -59,6 +61,7 @@ void interface(){
                 int delete_id;
                 printf("Enter student ID to delete: ");
                 scanf("%d", &delete_id);
+                getchar();
 
                 delete_student(student, &count, delete_id);
             }
