@@ -17,7 +17,7 @@ void add_student(struct Student *students, int *count) {
         printf("Enter ID: ");
         if(fgets(id_buffer, sizeof(id_buffer), stdin) == NULL) continue;
 
-        if(id_buffer[0] == "\n"){
+        if(id_buffer[0] == '\n'){
             printf("Error!! ID cannot be empty\n");
         } else if(sscanf(id_buffer, "%d", &check_id) == 1) {
             //Checks for duplicates
@@ -56,7 +56,7 @@ void add_student(struct Student *students, int *count) {
 
         if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
 
-        if(buffer[0] == "\n") {
+        if(buffer[0] == '\n') {
 
             printf("Input cannot be empty\n");
 
