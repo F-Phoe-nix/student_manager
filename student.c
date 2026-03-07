@@ -11,18 +11,28 @@ void add_student(struct Student *students, int *count) {
 
 
     //Get the student id and ensure no duplicates are present
+    char id_buffer[20];
     int check_id;
     do {
         printf("Enter ID: ");
-        scanf("%d", &check_id);
-        getchar();
+        if(fgets(id_buffer, sizeof(id_buffer), stdin) == NULL) continue;
 
-        if(!is_duplicate_id(students, *count, check_id)) {
-            break;
+        if(id_buffer[0] == "\n"){
+            printf("Error!! ID cannot be empty\n");
+        } else if(sscanf(id_buffer, "%d", &check_id) == 1) {
+            //Checks for duplicates
+            if(!is_duplicate_id(students, *count, check_id)) {
+                break;
+            }
+
+            printf("Error student with ID: %d already exists\n", check_id);
+            printf("Enter a unique ID\n");
+        } else {
+            printf("Enter a valid number");
         }
 
-        printf("Error student with ID: %d already exists\n", check_id);
-        printf("Enter a unique ID\n");
+
+
     } while(1);
     students[*count].id = check_id;
 
@@ -46,7 +56,7 @@ void add_student(struct Student *students, int *count) {
 
         if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
 
-        if(buffer[0] == '\n') {
+        if(buffer[0] == "\n") {
 
             printf("Input cannot be empty\n");
 
@@ -56,12 +66,11 @@ void add_student(struct Student *students, int *count) {
                 break;
             }
 
-            printf("Invalid Range!!\n");
+            printf("Error Semester must be between 1 and 10\n");
         } else {
-            printf("Invalid Characters!!\n");
+            printf("Enter a valid number\n");
         } 
 
-        printf("Enter a valid Semester (1 - 10)\n");
 
 
     }while(1);
