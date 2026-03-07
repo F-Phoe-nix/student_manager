@@ -7,6 +7,8 @@ A command line student management system written in c
 - Display all students  
 - Search student by ID  
 - Delete student by ID  
+- Update student information by ID  
+- Check for duplicate id (basically input validation)  
 - Makefile for compilation automation  
 
 ## How to build  
@@ -33,3 +35,11 @@ make clean
 - 'file_ops.h' - file function declarations
 - 'file_ops.c' - contains functions for saving and loading data from a file
 - 'Makefile' - Build automation
+
+## Future plans  
+- Remove the array data structure and use a linked list 
+- A GUI that will enable regular individuals use it
+
+## Purpose  
+This project is for learning purposes, for anyone trying to break into open source to understand how they work  
+So its kind of a getway project feel free to contribute any and all ideas  
