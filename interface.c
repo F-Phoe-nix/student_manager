@@ -31,7 +31,6 @@ void interface(){
                 display_students(student, &count);
                 printf("\nPress Enter to continue.....");
                 getchar();
-                getchar();
             break;
 
             case 3:

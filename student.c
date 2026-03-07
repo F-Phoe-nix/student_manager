@@ -86,7 +86,7 @@ void add_student(struct Student *students, int *count) {
             break;
         }
 
-        printf("Error!! Cause cannot be empty\n");
+        printf("Error!! Course cannot be empty\n");
     }while(1);
     
 
@@ -126,6 +126,7 @@ void delete_student(struct Student *students, int *count, int id){
 
     if(index == -1){
         printf("\nStudent with ID %d not found!!\n", id);
+        printf("Tip: use option 2 to see all available students\n");
 
         return;
     }
@@ -143,6 +144,7 @@ void update_student(struct Student *students, int count) {
     int update_id = -1;
     printf("Enter ID: ");
     scanf("%d", &update_id);
+    getchar();
 
     int index = search_student(students, count, update_id);
 
@@ -160,27 +162,60 @@ void update_student(struct Student *students, int count) {
 
         switch (choice) {
         case 1:
-            printf("Enter Name: ");
-            fgets(students[index].name, 50, stdin);
-            students[index].name[strcspn(students[index].name, "\n")] = 0;
+        {
+            do{
+                printf("Enter Name: ");
+                fgets(students[index].name, 50, stdin);
+                students[index].name[strcspn(students[index].name, "\n")] = 0; //grabs the newline character added by fgets
 
-            printf("Successfully updated name to %s\n", students[index].name);
+                if(students[index].name[0] != '\0'){
+                    printf("Successfully updated name to %s\n", students[index].name);
+                    break;
+                }
+
+                printf("Error!! Name Cannot be empty\n");
+            }while(1);
+        }
         break;
 
         case 2:
-            printf("Enter Semester: ");
-            scanf("%d", &students[index].semester);
-            getchar();
+        {
+            char buffer[10];
+            do {
+                printf("Enter Semester: ");
+                if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
 
-            printf("Successfully updated semester to %d\n", students[index].semester);
+                if(buffer[0] == '\n') {
+                    printf("Error!! Input can't be empty\n");
+                } else if(sscanf(buffer, "%d", &students[index].semester) == 1) {
+                    if(students[index].semester >= 1 && students[index].semester <= 10) {
+                        printf("Succefully update semester to %d\n", students[index].semester);
+                        break;
+                    }
+                    printf("Error! Semester must be between 1 and 10\n");
+                } else {
+                    printf("Enter a valid number\n");
+                }
+            } while(1);
+        }
         break;
 
         case 3:
-            printf("Enter Course: ");
-            fgets(students[index].course, 100, stdin);
-            students[index].course[strcspn(students[index].course, "\n")] = 0;
+        {
+            do{
+                printf("Enter Course: ");
+                fgets(students[index].course, 100, stdin);
+                students[index].course[(strcspn(students[index].course, "\n"))] = 0;
 
-            printf("Successfully updated course to %s\n", students[index].course);
+                if(students[index].course[0] != '\0') {
+                    printf("Successfully updated course to %s\n", students[index].course);
+                    break;
+                }
+
+                printf("Error!! Course cannot be empty\n");
+            }while(1);
+        }
+
         break;
         
         default:
