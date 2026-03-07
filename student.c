@@ -40,21 +40,28 @@ void add_student(struct Student *students, int *count) {
    }while(1);
 
    //Get the semester and validate
+   char buffer[10];
     do {
         printf("Enter Semester: ");
-        if(scanf("%d", &students[*count].semester) == 1) {
-            getchar();
 
+        if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
+
+        if(buffer[0] == '\n') {
+
+            printf("Input cannot be empty\n");
+
+        } else if(sscanf(buffer, "%d", &students[*count].semester) == 1){
+            
             if(students[*count].semester >= 1 && students[*count].semester <= 10) {
                 break;
-            } 
+            }
 
-            printf("Invalid Input!! Enter a valid semester (1 - 10)\n");
-
+            printf("Invalid Range!!\n");
         } else {
-            while(getchar() != '\n'); // Clearing if a letter is typed
-            printf("Invalid Input!! Enter a valid semester (1 - 10)\n");
-        }
+            printf("Invalid Characters!!\n");
+        } 
+
+        printf("Enter a valid Semester (1 - 10)\n");
 
 
     }while(1);
