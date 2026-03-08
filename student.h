@@ -16,7 +16,5 @@ void display_students(struct Student *students, int *count);
 int search_student(struct Student *students, int count, int id);
 void delete_student(struct Student *students, int *count, int id);
 void update_student(struct Student *students, int count);
-int is_duplicate_id(struct Student *students, int count, int id);
-
 
 #endif

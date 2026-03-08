@@ -20,21 +20,21 @@ void add_student(struct Student *students, int *count) {
         if(id_buffer[0] == '\n'){
             printf("Error!! ID cannot be empty\n");
         } else if(sscanf(id_buffer, "%d", &check_id) == 1) {
-            //Checks for duplicates
-            if(!is_duplicate_id(students, *count, check_id)) {
+            //Checks for duplicates exits the loop if none exist
+            if(search_student(students, *count, check_id) == -1) {
                 break;
             }
 
             printf("Error student with ID: %d already exists\n", check_id);
             printf("Enter a unique ID\n");
         } else {
-            printf("Enter a valid number");
+            printf("Enter a valid number\n");
         }
 
 
 
     } while(1);
-    students[*count].id = check_id;
+    students[*count].id = check_id; //stores the captured data into the struct
 
     //Get the name and validate it is not empty
    do{
@@ -224,14 +224,4 @@ void update_student(struct Student *students, int count) {
         }
 
     }
-}
-
-int is_duplicate_id(struct Student *students, int count, int id) {
-    for(int i = 0; i < count; i++) {
-        if(students[i].id == id ) {
-            return 1;
-        }
-    }
-
-    return 0;
 }
