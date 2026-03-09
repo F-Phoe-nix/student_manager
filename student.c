@@ -2,6 +2,66 @@
 #include <stdio.h>
 #include <string.h>
 
+//helper functions
+static int get_unique_id(struct Student *students, int count) {
+    char id_buffer[20];
+    int get_id;
+    do{
+        printf("Enter ID: ");
+        if(fgets(id_buffer, sizeof(id_buffer), stdin) == NULL) continue;
+
+        if(id_buffer[0] == '\n') {
+            printf("Error!! ID cannot be empty\n");
+        } else if(sscanf(id_buffer, "%d", &get_id) == 1) {
+            if(search_student(students, count, get_id) == -1) {
+                if(get_id <= 0) {
+                    printf("ID must be greater than 0\n");
+                } else {
+                    return get_id;
+                }
+            } else {
+                printf("Error!! Student with %d ID already exists\n", get_id);
+                printf("Enter a unique ID\n");
+            }
+
+        } else {
+            printf("Enter a valid number\n");
+        }
+    } while(1);
+}
+
+static void get_valid_string(char *dest, int size, const char *prompt) {
+    do{
+        printf("%s", prompt);
+        if(fgets(dest, size, stdin) != NULL) {
+            dest[strcspn(dest, "\n")] = '\0';
+
+            if(dest[0] != '\0') break;
+        }
+        printf("Error!! Input cannot be empty\n");
+    } while(1);
+}
+
+static int get_valid_semester() {
+    do
+    {
+        char buffer[10];
+        int sem;
+
+        printf("Enter semester (1 - 10): ");
+        if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
+
+        if(sscanf(buffer, "%d", &sem) == 1) {
+            if(sem >= 1 && sem <= 10) return sem;
+
+            printf("Semester must be between 1 and 10\n");
+        } else {
+            printf("Enter a valid semester\n");
+        }
+    } while (1);
+    
+}
+
 
 void add_student(struct Student *students, int *count) {
     if(*count >= MAX_STUDENTS) {
@@ -11,83 +71,17 @@ void add_student(struct Student *students, int *count) {
 
 
     //Get the student id and ensure no duplicates are present
-    char id_buffer[20];
-    int check_id;
-    do {
-        printf("Enter ID: ");
-        if(fgets(id_buffer, sizeof(id_buffer), stdin) == NULL) continue;
-
-        if(id_buffer[0] == '\n'){
-            printf("Error!! ID cannot be empty\n");
-        } else if(sscanf(id_buffer, "%d", &check_id) == 1) {
-            //Checks for duplicates exits the loop if none exist
-            if(search_student(students, *count, check_id) == -1) {
-                break;
-            }
-
-            printf("Error student with ID: %d already exists\n", check_id);
-            printf("Enter a unique ID\n");
-        } else {
-            printf("Enter a valid number\n");
-        }
-
-
-
-    } while(1);
-    students[*count].id = check_id; //stores the captured data into the struct
+    students[*count].id = get_unique_id(students, *count); //stores the captured data into the struct
 
     //Get the name and validate it is not empty
-   do{
-        printf("Enter Name: ");
-        fgets(students[*count].name, 50, stdin);
-        students[*count].name[strcspn(students[*count].name, "\n")] = 0; //grabs the newline character added by fgets
-
-        if(students[*count].name[0] != '\0'){
-            break;
-        }
-
-        printf("Error!! Name Cannot be empty\n");
-   }while(1);
-
+   get_valid_string(students[*count].name, 50, "Enter Name: ");
+   
    //Get the semester and validate
-   char buffer[10];
-    do {
-        printf("Enter Semester: ");
-
-        if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
-
-        if(buffer[0] == '\n') {
-
-            printf("Input cannot be empty\n");
-
-        } else if(sscanf(buffer, "%d", &students[*count].semester) == 1){
-            
-            if(students[*count].semester >= 1 && students[*count].semester <= 10) {
-                break;
-            }
-
-            printf("Error Semester must be between 1 and 10\n");
-        } else {
-            printf("Enter a valid number\n");
-        } 
-
-
-
-    }while(1);
+   students[*count].semester = get_valid_semester();
 
 
     //Get the course and validate it is not empty
-    do{
-        printf("Enter Course: ");
-        fgets(students[*count].course, 100, stdin);
-        students[*count].course[(strcspn(students[*count].course, "\n"))] = 0;
-
-        if(students[*count].course[0] != '\0') {
-            break;
-        }
-
-        printf("Error!! Course cannot be empty\n");
-    }while(1);
+    get_valid_string(students[*count].course, 100, "Enter Course: ");
     
 
     printf("\nSuccessfully added student %s with id %d\n", students[*count].name, students[*count].id);
@@ -141,10 +135,14 @@ void delete_student(struct Student *students, int *count, int id){
 }
 
 void update_student(struct Student *students, int count) {
-    int update_id = -1;
-    printf("Enter ID: ");
-    scanf("%d", &update_id);
-    getchar();
+    int update_id;
+
+    printf("Enter ID of student to update: ");
+    if(scanf("%d", &update_id) != 1){
+        printf("Inlavid input\n");
+        while(getchar() != '\n');
+        return;
+    }
 
     int index = search_student(students, count, update_id);
 
@@ -162,60 +160,18 @@ void update_student(struct Student *students, int count) {
 
         switch (choice) {
         case 1:
-        {
-            do{
-                printf("Enter Name: ");
-                fgets(students[index].name, 50, stdin);
-                students[index].name[strcspn(students[index].name, "\n")] = 0; //grabs the newline character added by fgets
-
-                if(students[index].name[0] != '\0'){
-                    printf("Successfully updated name to %s\n", students[index].name);
-                    break;
-                }
-
-                printf("Error!! Name Cannot be empty\n");
-            }while(1);
-        }
+            get_valid_string(students[index].name, 50, "Enter New Name: ");
+            printf("Successfully updated name of student with ID: %d to %s\n", update_id, students[index].name);
         break;
 
         case 2:
-        {
-            char buffer[10];
-            do {
-                printf("Enter Semester: ");
-                if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
-
-                if(buffer[0] == '\n') {
-                    printf("Error!! Input can't be empty\n");
-                } else if(sscanf(buffer, "%d", &students[index].semester) == 1) {
-                    if(students[index].semester >= 1 && students[index].semester <= 10) {
-                        printf("Succefully update semester to %d\n", students[index].semester);
-                        break;
-                    }
-                    printf("Error! Semester must be between 1 and 10\n");
-                } else {
-                    printf("Enter a valid number\n");
-                }
-            } while(1);
-        }
+            students[index].semester = get_valid_semester();
+            printf("Successfully updated semester of student with ID: %d to %d\n", update_id, students[index].semester);
         break;
 
         case 3:
-        {
-            do{
-                printf("Enter Course: ");
-                fgets(students[index].course, 100, stdin);
-                students[index].course[(strcspn(students[index].course, "\n"))] = 0;
-
-                if(students[index].course[0] != '\0') {
-                    printf("Successfully updated course to %s\n", students[index].course);
-                    break;
-                }
-
-                printf("Error!! Course cannot be empty\n");
-            }while(1);
-        }
-
+            get_valid_string(students[index].course, 100, "Enter New Course: ");
+            printf("Successfully updated semester of student with ID: %d to %s\n", update_id, students[index].course);
         break;
         
         default:
