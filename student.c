@@ -2,30 +2,43 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MIN_ID 1
+#define MAX_ID 10000
+#define MIN_SEM 1
+#define MAX_SEM 10
+
 //helper functions
+static int get_valid_int(char *prompt, int min, int max) {
+    do
+    {
+        char buffer[10];
+        int value;
+
+        printf("%s", prompt);
+        if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
+
+        if(sscanf(buffer, "%d", &value) == 1) {
+            if(value >= min && value <= max) {
+                return value;
+            }
+            printf("Error!! Enter a number between %d and %d\n", min, max);
+        } else {
+            printf("Error!! Invalid input\n");
+        }
+    } while (1);
+    
+}
+
 static int get_unique_id(struct Student *students, int count) {
-    char id_buffer[20];
     int get_id;
     do{
-        printf("Enter ID: ");
-        if(fgets(id_buffer, sizeof(id_buffer), stdin) == NULL) continue;
+        get_id = get_valid_int("Enter ID: ", MIN_ID, MAX_ID);
 
-        if(id_buffer[0] == '\n') {
-            printf("Error!! ID cannot be empty\n");
-        } else if(sscanf(id_buffer, "%d", &get_id) == 1) {
-            if(search_student(students, count, get_id) == -1) {
-                if(get_id <= 0) {
-                    printf("ID must be greater than 0\n");
-                } else {
-                    return get_id;
-                }
-            } else {
-                printf("Error!! Student with %d ID already exists\n", get_id);
-                printf("Enter a unique ID\n");
-            }
-
+        if(search_student(students, count, get_id) == -1){
+            return get_id;
         } else {
-            printf("Enter a valid number\n");
+            printf("Error!! student with ID: %d already exists\n", get_id);
+            printf("Enter a unique value\n");
         }
     } while(1);
 }
@@ -42,25 +55,7 @@ static void get_valid_string(char *dest, int size, const char *prompt) {
     } while(1);
 }
 
-static int get_valid_semester() {
-    do
-    {
-        char buffer[10];
-        int sem;
 
-        printf("Enter semester (1 - 10): ");
-        if(fgets(buffer, sizeof(buffer), stdin) == NULL) continue;
-
-        if(sscanf(buffer, "%d", &sem) == 1) {
-            if(sem >= 1 && sem <= 10) return sem;
-
-            printf("Semester must be between 1 and 10\n");
-        } else {
-            printf("Enter a valid semester\n");
-        }
-    } while (1);
-    
-}
 
 
 void add_student(struct Student *students, int *count) {
@@ -77,8 +72,7 @@ void add_student(struct Student *students, int *count) {
    get_valid_string(students[*count].name, 50, "Enter Name: ");
    
    //Get the semester and validate
-   students[*count].semester = get_valid_semester();
-
+   students[*count].semester = get_valid_int("Enter Semester: ", MIN_SEM, MAX_SEM);
 
     //Get the course and validate it is not empty
     get_valid_string(students[*count].course, 100, "Enter Course: ");
@@ -135,28 +129,19 @@ void delete_student(struct Student *students, int *count, int id){
 }
 
 void update_student(struct Student *students, int count) {
-    int update_id;
-
-    printf("Enter ID of student to update: ");
-    if(scanf("%d", &update_id) != 1){
-        printf("Inlavid input\n");
-        while(getchar() != '\n');
-        return;
-    }
+    int update_id = get_valid_int("Enter ID of student to update: ", MIN_ID, MAX_ID);
 
     int index = search_student(students, count, update_id);
 
     if(index == -1){
         printf("\nStudent with ID %d not found\n", update_id);
     } else {
-        int choice;
         printf("\nWhat do you want to update: \n");
         printf("    1. Name\n");
         printf("    2. Semester\n");
         printf("    3. Course\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        getchar();
+        
+        int choice = get_valid_int("Enter your choice: ", 1, 3);
 
         switch (choice) {
         case 1:
@@ -165,7 +150,7 @@ void update_student(struct Student *students, int count) {
         break;
 
         case 2:
-            students[index].semester = get_valid_semester();
+            students[index].semester = get_valid_int("Enter New Semester: ", MIN_SEM, MAX_SEM);
             printf("Successfully updated semester of student with ID: %d to %d\n", update_id, students[index].semester);
         break;
 
@@ -175,7 +160,7 @@ void update_student(struct Student *students, int count) {
         break;
         
         default:
-            printf("Invalid input\n\n Enter either 1, 2, or 3");
+            printf("Invalid input\n\nEnter either 1, 2, or 3\n");
         break;
         }
 
