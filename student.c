@@ -64,7 +64,6 @@ void add_student(struct Student *students, int *count) {
         return;
     }
 
-
     //Get the student id and ensure no duplicates are present
     students[*count].id = get_unique_id(students, *count); //stores the captured data into the struct
 
@@ -77,7 +76,6 @@ void add_student(struct Student *students, int *count) {
     //Get the course and validate it is not empty
     get_valid_string(students[*count].course, 100, "Enter Course: ");
     
-
     printf("\nSuccessfully added student %s with id %d\n", students[*count].name, students[*count].id);
     (*count)++;
 
