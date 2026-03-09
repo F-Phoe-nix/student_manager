@@ -55,9 +55,7 @@ static void get_valid_string(char *dest, int size, const char *prompt) {
     } while(1);
 }
 
-
-
-
+//Main functions
 void add_student(struct Student *students, int *count) {
     if(*count >= MAX_STUDENTS) {
         printf("\nError!! Cannot add more students (maximum %d reached)\n", MAX_STUDENTS);
