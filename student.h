@@ -1,20 +1,23 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
-#define MAX_STUDENTS 100
-
-struct Student
-{
+struct Student {
     int id; 
     char name[50];
     int semester;
     char course[100];
 };
 
-void add_student(struct Student *students, int *count);
-void display_students(struct Student *students, int *count);
-int search_student(struct Student *students, int count, int id);
-void delete_student(struct Student *students, int *count, int id);
-void update_student(struct Student *students, int count);
+struct StudentNode {
+    struct Student data;
+    struct StudentNode *next;
+};
+
+void add_student(struct StudentNode **head);
+void display_students(struct StudentNode *head);
+struct StudentNode *search_student(struct StudentNode *head, int id);
+void delete_student(struct StudentNode **head, int id);
+void update_student(struct StudentNode **head);
+void free_students(struct StudentNode *head);
 
 #endif
