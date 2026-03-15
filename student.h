@@ -1,24 +1,11 @@
 #ifndef STUDENT_H
 #define STUDENT_H
+#include <sqlite3.h>
 
-struct Student {
-    int id; 
-    char name[50];
-    int semester;
-    char course[100];
-};
-
-struct StudentNode {
-    struct Student data;
-    struct StudentNode *next;
-};
-
-void add_student(struct StudentNode **head);
-void display_students(struct StudentNode *head);
-struct StudentNode *search_student(struct StudentNode *head, int id);
-void delete_student(struct StudentNode **head, int id);
-void update_student(struct StudentNode *head);
-void free_students(struct StudentNode *head);
-int count_students(struct StudentNode *head);
+void add_student(sqlite3 *db);
+void display_students(sqlite3 *db);
+void search_student(sqlite3 *db);
+void delete_student(sqlite3 *db);
+void update_student(sqlite3 *db);
 
 #endif

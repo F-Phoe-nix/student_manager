@@ -1,12 +1,20 @@
 #include <stdio.h>
 #include "student.h"
-#include "file_ops.h"
+#include "db.h"
 
 void interface(){
-    struct StudentNode *head = load_students();
-    int choice;
+    sqlite3 *db = db_open("students.db");
 
-    
+    if(db == NULL) {
+        return;
+    }
+
+    if(db_init(db) != 0) {
+        db_close(db);
+        return;
+    }
+
+    int choice;
 
     do{
         printf("\n========= Student Management System ==========\n");
@@ -23,11 +31,11 @@ void interface(){
 
         switch(choice){
             case 1:
-                add_student(&head);
+                add_student(db);
             break;
 
             case 2:
-                display_students(head);
+                display_students(db);
                 printf("\nPress Enter to continue.....");
                 getchar();
             break;
@@ -39,18 +47,18 @@ void interface(){
                 scanf("%d", &search_id);
                 getchar();
 
-                struct StudentNode *found = search_student(head, search_id);
+                search_student(db);
 
-                if(found != NULL){
-                    printf("\n=====Student Found====\n");
-                    printf("    ID: %d\n", found -> data.id);
-                    printf("    Name: %s\n", found -> data.name);
-                    printf("    Semester: %d\n", found -> data.semester);
-                    printf("    Course: %s\n", found -> data.course);
-                } else {
-                    printf("\nStudent with ID %d not found!!\n", search_id);
-                    printf("Tip: Use option 2 to see all students and their IDS");
-                }
+                // if(found != NULL){
+                //     printf("\n=====Student Found====\n");
+                //     printf("    ID: %d\n", found -> data.id);
+                //     printf("    Name: %s\n", found -> data.name);
+                //     printf("    Semester: %d\n", found -> data.semester);
+                //     printf("    Course: %s\n", found -> data.course);
+                // } else {
+                //     printf("\nStudent with ID %d not found!!\n", search_id);
+                //     printf("Tip: Use option 2 to see all students and their IDS");
+                // }
             }
             break;
 
@@ -61,22 +69,19 @@ void interface(){
                 scanf("%d", &delete_id);
                 getchar();
 
-                delete_student(&head, delete_id);
+                delete_student(db);
             }
             break;
 
             case 5:
-                update_student(head);
+                update_student(db);
             break;
 
             case 6:
-                save_students(head);
+                //save_students(db);
             break;
 
             case 0:
-                save_students(head);
-                free_students(head);
-                head = NULL;
                 printf("Exiting.....\n");
             break;
 
@@ -87,6 +92,8 @@ void interface(){
             }
 
     } while(choice != 0);
+
+    db_close(db);
 
     printf("Goodbye!!!\n");
 

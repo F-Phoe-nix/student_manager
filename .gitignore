@@ -2,3 +2,4 @@ a.out
 student_manager
 *.o
 *.dat
+*.db
