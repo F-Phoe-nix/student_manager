@@ -3,8 +3,7 @@
 #include "file_ops.h"
 
 void interface(){
-    struct Student student[MAX_STUDENTS];
-    int count = load_students(student);
+    struct StudentNode *head = load_students();
     int choice;
 
     
@@ -24,11 +23,11 @@ void interface(){
 
         switch(choice){
             case 1:
-                add_student(student, &count);
+                add_student(&head);
             break;
 
             case 2:
-                display_students(student, &count);
+                display_students(head);
                 printf("\nPress Enter to continue.....");
                 getchar();
             break;
@@ -40,14 +39,14 @@ void interface(){
                 scanf("%d", &search_id);
                 getchar();
 
-                int index = search_student(student, count, search_id);
+                struct StudentNode *found = search_student(head, search_id);
 
-                if(index != -1){
+                if(found != NULL){
                     printf("\n=====Student Found====\n");
-                    printf("    ID: %d\n", student[index].id);
-                    printf("    Name: %s\n", student[index].name);
-                    printf("    Semester: %d\n", student[index].semester);
-                    printf("    Course: %s\n", student[index].course);
+                    printf("    ID: %d\n", found -> data.id);
+                    printf("    Name: %s\n", found -> data.name);
+                    printf("    Semester: %d\n", found -> data.semester);
+                    printf("    Course: %s\n", found -> data.course);
                 } else {
                     printf("\nStudent with ID %d not found!!\n", search_id);
                     printf("Tip: Use option 2 to see all students and their IDS");
@@ -62,25 +61,27 @@ void interface(){
                 scanf("%d", &delete_id);
                 getchar();
 
-                delete_student(student, &count, delete_id);
+                delete_student(&head, delete_id);
             }
             break;
 
             case 5:
-                update_student(student, count);
+                update_student(head);
             break;
 
             case 6:
-                save_students(student, count);
+                save_students(head);
             break;
 
             case 0:
-                save_students(student, count);
+                save_students(head);
+                free_students(head);
+                head = NULL;
                 printf("Exiting.....\n");
             break;
 
             default:
-                printf("Invalid input!!!\n\n Select either 1, 2, 3, 4 or 0!!\n");
+                printf("Invalid input!!!\n\nSelect either 1, 2, 3, 4 or 0!!\n");
             break;
 
             }

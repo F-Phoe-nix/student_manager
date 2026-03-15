@@ -17,7 +17,8 @@ void add_student(struct StudentNode **head);
 void display_students(struct StudentNode *head);
 struct StudentNode *search_student(struct StudentNode *head, int id);
 void delete_student(struct StudentNode **head, int id);
-void update_student(struct StudentNode **head);
+void update_student(struct StudentNode *head);
 void free_students(struct StudentNode *head);
+int count_students(struct StudentNode *head);
 
 #endif
