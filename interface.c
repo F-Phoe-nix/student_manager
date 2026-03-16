@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "student.h"
 #include "db.h"
+#include "utils.h"
 
 void interface(){
     sqlite3 *db = db_open("students.db");
@@ -23,11 +24,10 @@ void interface(){
         printf("3. Search Student\n");
         printf("4. Delete Student\n");
         printf("5. Update Student\n");
-        printf("6. Save to file\n");
+        //printf("6. Save to file\n");
         printf("0. Exit\n");
-        printf("Enter choice: ");
-        scanf("%d", &choice);
-        getchar();
+        
+        choice = get_valid_int("Enter Choice: ", 0, 6);
 
         switch(choice){
             case 1:
@@ -42,35 +42,18 @@ void interface(){
 
             case 3:
             {
-                int search_id;
-                printf("\nEnter student id to search: ");
-                scanf("%d", &search_id);
+                int id = get_valid_int("Enter ID to search: ", 1, 1000);
+
+                if(search_student(db, id) != SQLITE_ROW) {
+                    printf("\nStudent with ID: %d not found\n", id);
+                }
+                printf("\nPress Enter to continue.....");
                 getchar();
-
-                search_student(db);
-
-                // if(found != NULL){
-                //     printf("\n=====Student Found====\n");
-                //     printf("    ID: %d\n", found -> data.id);
-                //     printf("    Name: %s\n", found -> data.name);
-                //     printf("    Semester: %d\n", found -> data.semester);
-                //     printf("    Course: %s\n", found -> data.course);
-                // } else {
-                //     printf("\nStudent with ID %d not found!!\n", search_id);
-                //     printf("Tip: Use option 2 to see all students and their IDS");
-                // }
             }
             break;
 
             case 4:
-            {
-                int delete_id;
-                printf("Enter student ID to delete: ");
-                scanf("%d", &delete_id);
-                getchar();
-
                 delete_student(db);
-            }
             break;
 
             case 5:

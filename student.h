@@ -4,7 +4,7 @@
 
 void add_student(sqlite3 *db);
 void display_students(sqlite3 *db);
-void search_student(sqlite3 *db);
+int search_student(sqlite3 *db, int id);
 void delete_student(sqlite3 *db);
 void update_student(sqlite3 *db);
 

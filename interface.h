@@ -1,5 +1,5 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
 void interface();
 

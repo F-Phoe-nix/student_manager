@@ -4,7 +4,7 @@ LDFLAGS = -lsqlite3
 
 TARGET = student_manager
 
-SRCS = main.c student.c interface.c db.c
+SRCS = main.c student.c interface.c db.c utils.c
 
 OBJS = $(patsubst %.c,%.o,$(SRCS))
 
