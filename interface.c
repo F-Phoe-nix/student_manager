@@ -35,7 +35,7 @@ void interface(){
 
             case 3:
             {
-                int search_id = get_valid_int("Enter student id to search: ", 1, 1000);
+                int search_id = get_valid_int("Enter student ID to search: ", MIN_ID, MAX_ID);
 
                 int index = search_student(student, count, search_id);
 
@@ -54,7 +54,7 @@ void interface(){
 
             case 4:
             {
-                int delete_id = get_valid_int("Enter student ID to delete: ", 1, 1000);
+                int delete_id = get_valid_int("Enter student ID to delete: ", MIN_ID, MAX_ID);
 
                 delete_student(student, &count, delete_id);
             }
@@ -74,7 +74,7 @@ void interface(){
             break;
 
             default:
-                printf("Invalid input!!!\n\n Select either 1, 2, 3, 4 or 0!!\n");
+                printf("Invalid input!!!\n\nSelect either 1, 2, 3, 4 or 0!!\n");
             break;
 
             }

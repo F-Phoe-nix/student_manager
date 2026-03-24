@@ -2,8 +2,6 @@
 #include "utils.h"
 #include <stdio.h>
 
-#define MIN_ID 1
-#define MAX_ID 10000
 #define MIN_SEM 1
 #define MAX_SEM 10
 

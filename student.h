@@ -2,6 +2,8 @@
 #define STUDENT_H
 
 #define MAX_STUDENTS 100
+#define MIN_ID 1
+#define MAX_ID 10000
 
 struct Student
 {
