@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "student.h"
 #include "file_ops.h"
+#include "utils.h"
 
 void interface(){
     struct Student student[MAX_STUDENTS];
@@ -18,9 +19,8 @@ void interface(){
         printf("5. Update Student\n");
         printf("6. Save to file\n");
         printf("0. Exit\n");
-        printf("Enter choice: ");
-        scanf("%d", &choice);
-        getchar();
+        choice = get_valid_int("Enter choice: ", 0, 6);
+        
 
         switch(choice){
             case 1:
@@ -35,10 +35,7 @@ void interface(){
 
             case 3:
             {
-                int search_id;
-                printf("\nEnter student id to search: ");
-                scanf("%d", &search_id);
-                getchar();
+                int search_id = get_valid_int("Enter student id to search: ", 1, 1000);
 
                 int index = search_student(student, count, search_id);
 
@@ -57,10 +54,7 @@ void interface(){
 
             case 4:
             {
-                int delete_id;
-                printf("Enter student ID to delete: ");
-                scanf("%d", &delete_id);
-                getchar();
+                int delete_id = get_valid_int("Enter student ID to delete: ", 1, 1000);
 
                 delete_student(student, &count, delete_id);
             }

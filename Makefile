@@ -3,7 +3,7 @@ CFLAGS = -Wall -g
 
 TARGET = student_manager
 
-SRCS = main.c student.c interface.c file_ops.c
+SRCS = main.c student.c interface.c file_ops.c utils.c
 
 OBJS = $(patsubst %.c,%.o,$(SRCS))
 

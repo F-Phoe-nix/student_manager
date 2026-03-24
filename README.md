@@ -34,6 +34,8 @@ make clean
 - 'student.c' - contains the core logic of adding, searching, deleting and updating students
 - 'file_ops.h' - file function declarations
 - 'file_ops.c' - contains functions for saving and loading data from a file
+- 'utils.h' 
+- 'utils.c' - helper funtions for the entire project such as get values
 - 'Makefile' - Build automation
 
 ## Future plans  
